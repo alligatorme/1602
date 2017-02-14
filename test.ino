@@ -40,6 +40,8 @@ void loop() {
 	case 2 ... 5:
 		send_cmd(cmd-2);
 		break;
+	case 6:
+		send_cmd(cmd-2);
 	default:
 		delay(300);
 	}
