@@ -38,11 +38,14 @@ void loop() {
 		mesr(10,5,false);
 		break;
 	case 2 ... 5:
-		int tp=send_cmd(cmd-2);
-		clt.println(tp*100);
+		clt.println(send_cmd(cmd-2)*100);
 		break;
 	case 6:
-		send_cmd(cmd-2);
+    send_cmd(5);
+    pm10=0;
+    pm25=0;
+		clt.println(send_cmd(cmd-2)*100);
+    clt.println(pm10);
 	default:
 		delay(300);
 	}
@@ -53,7 +56,7 @@ void mesr(int itv, int cnt, bool rqst) {
 	pm10=0;
 	pm25=0;
 	int i=0;
-	send_cmd(1);
+	send_cmd(2);
 	if (rqst) send_cmd(3);
 	delay(1000*itv);
 	rmbuf();
