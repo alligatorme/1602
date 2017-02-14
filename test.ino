@@ -121,7 +121,7 @@ int send_cmd(int id) {
 	for(int i=0;i<5;i++) {
 		delay(300);
 		int chk=get_pm();
-		if (chk>1) {clt.println(chk*100); break;}
+//		if (chk>1) {clt.println(chk*100); break;}
 	}
 }
 
