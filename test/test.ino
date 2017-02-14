@@ -15,7 +15,7 @@ void setup() {
 	pickup();
 //	WiFi.begin(ssid,pswd);
 	while(WiFi.status()!=WL_CONNECTED) delay(1000);
-//Serial.println(WiFi.localIP());
+//	Serial.println(WiFi.localIP());
 	digitalWrite(idc,1);
 	srv.begin();
 	clt=srv.available();
