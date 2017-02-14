@@ -15,7 +15,7 @@ void setup() {
 	pickup();
 //	WiFi.begin(ssid,pswd);
 	while(WiFi.status()!=WL_CONNECTED) delay(1000);
-  Serial.println(WiFi.localIP());
+//Serial.println(WiFi.localIP());
 	digitalWrite(idc,1);
 	srv.begin();
 	clt=srv.available();
@@ -41,9 +41,9 @@ void loop() {
 		clt.println(send_cmd(cmd-2)*100);
 		break;
 	case 6:
-    send_cmd(5);
-    pm10=0;
-    pm25=0;
+		send_cmd(5);
+		pm10=0;
+		pm25=0;
 		clt.println(send_cmd(cmd-2)*100);
     clt.println(pm10);
 	default:
