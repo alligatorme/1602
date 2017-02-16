@@ -35,38 +35,34 @@ void loop() {
 	digitalWrite(idc,0);
 	switch(cmd) {
 	case 1:
-		mesr(10,5,false);
+		mesr(20,5,false,0);
 		break;
 	case 2 ... 5:
 		clt.println(send_cmd(cmd-2)*100);
 		break;
 	case 6:
-		send_cmd(5);
-		pm10=0;
-		pm25=0;
-		clt.println(send_cmd(cmd-2)*100);
-    clt.println(pm10);
+		mesr(10,5,true,5);
+		break;
 	default:
 		delay(300);
 	}
 	digitalWrite(idc,1);
 }
 
-void mesr(int itv, int cnt, bool rqst) {
+void mesr(int mxt, int cnt, bool rqst, int itv) {
 	pm10=0;
 	pm25=0;
 	int i=0;
 	send_cmd(2);
 	if (rqst) send_cmd(3);
-	delay(1000*itv);
+	delay(1000*mxt);
 	rmbuf();
-	while (i<=cnt) {
+	while (i<cnt) {
 		if (rqst) {
-			send_cmd(5);
 			for(int j=0;j<5;j++) {
-				if (get_pm()==1) {i++; break;}
+				if (send_cmd(4)==1) {i++; break;}
 			}
-			delay(1000*2);
+			delay(1000*itv);
 		}
 		else {
 			if (get_pm()==1) i++;
@@ -103,11 +99,6 @@ int get_pm() {
 				byte rspd[4][4]={{0x06,0x01,0x00,0x00},{0x06,0x01,0x01,0x00},{0x02,0x01,0x00,0x00},{0x02,0x01,0x01,0x00}};
 				for(int i=0;i<4;i++) {
 					if (!memcmp(rspd[i],pm+1,4)) return i+2;
-//					bool chk=false;
-//					for(int j=0;j<4;j++) {
-//						chk=(rspd[i][j]^pm[j+1])||chk;
-//					}
-//					if (!chk) return i+2;
 				}
 			}
 		}
@@ -117,6 +108,7 @@ int get_pm() {
 }
 
 int send_cmd(int id) {
+//0:sleep;1:mesure;2:inital;3:passive;4:request
 	byte cmdset[5][19]={{0xaa,0xb4,0x06,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff,0xff,0x05,0xab},\
 						{0xaa,0xb4,0x06,0x01,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff,0xff,0x06,0xab},\
 						{0xaa,0xb4,0x02,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff,0xff,0x01,0xab},\
@@ -143,7 +135,6 @@ void pickup() {
 	int apn=scan.scanNetworks();
 	bool ap=false;
 	for(int i=0;i<apn;i++) {
-//		Serial.println(scan.SSID(i));
 		for(int j=0;j<3;j++){
 			if (scan.SSID(i)==ssid[j]) {
 				WiFi.begin(ssid[j],pswd[j]);
