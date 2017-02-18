@@ -73,9 +73,9 @@ void mesr(int mxt, int cnt, bool rqst, int itv) {
 	rst[0]=pm25%256;rst[1]=pm25>>8;rst[2]=pm10%256;rst[3]=pm10>>8;
 	int sha=0;
 	for(int i=0;i<4;i++) {
-		sha+=rst[i];
 		rst[i+4]=!rst[i]?0xaa:0xee;
 		rst[i]=!rst[i]?0x0f:rst[i];
+		sha+=rst[i];
 	}
 	rst[8]=sha%256;
 	clt.write((char*)rst,9);
