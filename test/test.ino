@@ -13,7 +13,7 @@ PMs pms(14,12);
 
 void setup() {
 	Serial.begin(9600);
-	pms.begin();
+//	pms.begin();
 	pinMode(idc,OUTPUT);
 	pinMode(relay,OUTPUT);
 	digitalWrite(relay,1);
@@ -40,11 +40,11 @@ void loop() {
 //	int cmd=clt.read();
 	digitalWrite(idc,0);
 	switch(cmd) {
-	case 1:
-		mesr(20,5,false,0);
+	case 0 ... 4:
+		clt.println(pms.writeOrder(cmd)*100);
 		break;
-	case 2 ... 5:
-		clt.println(pms.writeOrder(cmd-2)*100);
+	case 5:
+		mesr(20,5,false,0);
 		break;
 	case 6:
 		mesr(10,5,true,5);

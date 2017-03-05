@@ -5,7 +5,7 @@
 class PMs {
 	public:
 		PMs(int,int);
-		void begin();
+//		void begin();
 		void measure(byte,byte,bool,byte,byte*);
 		byte writeOrder(byte);
 		byte readData();

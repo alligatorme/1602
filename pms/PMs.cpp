@@ -3,19 +3,22 @@
 PMs::PMs(int rcv, int trm ){
 //	SoftwareSerial _swSr(rcv,trm,false,256);
 	_swSr=new SoftwareSerial(rcv,trm,false,256);
-}
-void PMs::begin(){
 	_swSr->begin(9600);
 }
+//void PMs::begin(){
+//	_swSr->begin(9600);
+//}
 
 void PMs::measure(byte mxt, byte cnt, bool rqst, byte itv, byte* rst) {
 	pms[1]=0;
 	pms[0]=0;
 	byte i=0;
 	writeOrder(2);
-	if (rqst) writeOrder(3);
+//	rqst?writeOrder(3):writeOrder(2);
+	writeOrder(3);
 	delay(1000*mxt);
 	cleanBuffer();
+	if (!rqst) writeOrder(2);
 	while (i<cnt) {
 		if (rqst) {
 			for(byte j=0;j<5;j++) {
